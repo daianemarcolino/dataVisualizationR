@@ -1,0 +1,73 @@
+---
+title: "Untitled"
+author: "Daiane Marcolino"
+date: "Novembro de 2016"
+output: ioslides_presentation
+bibliography: referencias.bib
+---
+
+# Título - Nível 1
+
+
+## Formatação básica e Listas
+
+Esse é um parágrafo qualquer com texto escrito em **negrito**, *itálico* e uma lista:
+
+- Item 1 da lista
+    - subitem 1
+    - subitem 2
+- Item 2 da lista
+
+       
+## Códigos em R
+
+Se você quiser escrever um `código em R` no meio do texto use um acento grave no início e outro no final do código.
+
+Os *chunks* são incluídos com três acentos graves no início e no final:
+
+```{r}
+x <- rnorm(10)
+y <- rnorm(10)
+```
+
+----
+
+Crie um slide novo usando `----`
+
+```{r plot , fig.cap = 'Exemplo de gráfico'}
+plot(x,y)
+```
+
+
+## Links e Imagens
+
+Os links são adicionados usando `[texto](url)` como, por exemplo, [R Markdown](http://rmarkdown.rstudio.com/).
+
+Para incluir imagens, é muito parecido: `![image](url)`.
+
+![RStudio](https://www.rstudio.com/wp-content/uploads/2014/03/blue-125.png)
+
+## Expressões e equações
+
+Fórmulas matemáticas podem ser incluídas no seu documento usando \$ no início e no final da expressão: $\alpha + \beta = 1$. Se você quiser centralizar a fórmula, use \$\$: 
+
+$$f(x) = \sin(x^2) + 1 $$
+
+## Adicionando referências
+
+Deseja referenciar algo? 
+
+Adicione `bibliography: arquivo.bib` ao preâmbulo e use:
+
+- `[@nome_ref]` ou
+- `[-@nome_ref]` ou
+- `@nome_ref`
+
+Exemplo: Veja @r2016. 
+
+As referências serão adicionadas ao final do arquivo.
+
+# Referências
+
+----
+

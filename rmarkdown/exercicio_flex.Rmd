@@ -1,0 +1,78 @@
+---
+title: "Untitled"
+output: 
+  flexdashboard::flex_dashboard:
+    orientation: columns
+    vertical_layout: fill
+---
+
+```{r setup, include=FALSE}
+library(flexdashboard)
+```
+
+Column {data-width=650}
+-----------------------------------------------------------------------
+
+### Diagrama de Venn
+
+Comentário aqui
+
+```{r}
+
+# leitura dos dados
+ipea <- read.csv2("V:/SUEP/Núcleo de Métodos Estatísticos e Computacionais/01 training/14 Daiane/Curso BD/00 arrumar e enviar/bases de dados/base_pesquisa_ipea.csv")
+dados <- ipea[,c("sexo","mulheres.que.usam.roupas.que.mostram.o.corpo.merecem.ser.atacadas",
+                 "se.as.mulheres.soubessem.como.se.comportar..haveria.menos.estupros")]
+colnames(dados) <- c("sexo","A","B")
+
+#source("http://www.bioconductor.org/biocLite.R")
+#biocLite("limma")
+library(limma)
+
+novos_dados <- subset(dados, sexo == "masculino")[,2:3]
+novos_dados$A <- ifelse(novos_dados$A %in% c("concorda parcial","concorda total"), 1, 0)
+novos_dados$B <- ifelse(novos_dados$B %in% c("concorda parcial","concorda total"), 1, 0)
+
+contagem <- vennCounts(novos_dados)
+vennDiagram(contagem, circle.col = c("tomato","steelblue"), counts.col = 1)
+
+```
+
+Column {data-width=350}
+-----------------------------------------------------------------------
+
+### Wordcloud Dilma
+
+```{r}
+# pacotes necessários
+library(tm)
+library(RColorBrewer) # paleta de cores
+library(wordcloud)
+
+# ler discurso
+dilma <- readLines("V:/SUEP/Núcleo de Métodos Estatísticos e Computacionais/01 training/14 Daiane/Curso BD/00 arrumar e enviar/bases de dados/discurso_dilma.txt")
+
+# palavras que não gostaria que entrassem 
+palavras_remover <- c("que","para","com","isso","como","por", "essa","esse","mas","são","uma",
+                      "vão","eles","elas","ela", "eu","nós","meu", "minha","não","mais","foi","aqui",
+                      "então","tem","dos","das","de","da","seu","sua","seus","suas","era", "meus","ele",
+                      "nos","está","estou","estamos", "muito","até","houve","aos")
+
+# criar objeto corpus
+corpus_dilma <- Corpus(VectorSource(dilma))
+corpus_dilma <- tm_map(corpus_dilma, removePunctuation)
+corpus_dilma <- tm_map(corpus_dilma, removeNumbers)
+corpus_dilma <- tm_map(corpus_dilma, removeWords, palavras_remover)
+
+# desenhar nuvem
+wordcloud(corpus_dilma, max.words = 20, random.order = F, rot.per = F, 
+          colors = RColorBrewer::brewer.pal(5,"Reds"), font = 2)
+
+```
+
+### Chart C
+
+```{r}
+
+```
+

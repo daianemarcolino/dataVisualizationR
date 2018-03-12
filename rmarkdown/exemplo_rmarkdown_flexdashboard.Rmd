@@ -1,0 +1,84 @@
+---
+title: "Meu Dashboard"
+output: 
+  flexdashboard::flex_dashboard:
+    vertical_layout: fill
+---
+
+<!-- INSTRUÇÕES -->
+<!-- inserir nova página: ====== -->
+<!-- inserir novo quadro: ------ -->
+
+
+Início
+=====================================  
+
+Column {data-width=600}
+-------------------------------------
+    
+### Quadro 1
+    
+```{r}
+```
+ 
+### Quadro 2
+    
+```{r}
+```
+
+Column {data-width=600}
+-------------------------------------
+   
+### Quadro 3
+
+```{r}
+```   
+ 
+
+Outra página {data-orientation=rows}
+=====================================     
+   
+Row {data-height=600}
+-------------------------------------
+
+### Quadro 1
+
+```{r}
+```
+
+Row {data-height=400 .tabset}
+-------------------------------------
+   
+### Quadro 2
+
+```{r}
+```   
+    
+### Quadro 3
+
+```{r}
+```
+
+Mais uma página {data-orientation=columns}
+=====================================     
+   
+Column {data-width=600}
+-------------------------------------
+
+### Quadro 1
+
+```{r}
+```
+
+Column {data-width=400 .tabset}
+-------------------------------------
+   
+### Quadro 2
+
+```{r}
+```   
+    
+### Quadro 3
+
+```{r}
+```
