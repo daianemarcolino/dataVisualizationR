@@ -15,7 +15,7 @@ library("pacman")
 # pacotes usados nas aulas
 p_load(readxl, ggplot2, plotly, corrplot, plotrix, 
        RColorBrewer, VennDiagram, visNetwork, treemap, tm,
-       wordcloud, BETS, devtools, dygraphs,
+       wordcloud, wordcloud2, BETS, devtools, dygraphs,
        rmarkdown, flexdashboard, shiny, shinydashboard, shinythemes)
 
 source("http://www.bioconductor.org/biocLite.R")
