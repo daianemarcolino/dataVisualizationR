@@ -1,0 +1,114 @@
+---
+title: "Flex Dashboard"
+output: 
+  flexdashboard::flex_dashboard:
+    orientation: columns
+    vertical_layout: fill
+---
+
+```{r setup, include=FALSE}
+library(flexdashboard)
+```
+
+Página 1
+=================
+
+Column {data-width=150}
+-----------------------------------------------------------------------
+
+### Diagrama de Venn
+
+O Diagrama de Venn a seguir representa a quantidade de homens que disseram concordar
+(parcial ou totalmente) com as afirmações "Mulheres que usam roupas que mostram o corpo merecem ser atacadas" (A) e "Se as mulheres soubessem como se comportar, haveria menos estupros" (B) na pesquisa Tolerância social à violência contra as mulheres realizada pelo IPEA em 2013.
+
+```{r}
+
+# leitura dos dados
+ipea <- read.csv2("base_pesquisa_ipea.csv")
+dados <- ipea[,c("sexo","mulheres.que.usam.roupas.que.mostram.o.corpo.merecem.ser.atacadas",
+                 "se.as.mulheres.soubessem.como.se.comportar..haveria.menos.estupros")]
+colnames(dados) <- c("sexo","A","B")
+
+#source("http://www.bioconductor.org/biocLite.R")
+#biocLite("limma")
+library(limma)
+
+novos_dados <- subset(dados, sexo == "masculino")[,2:3]
+novos_dados$A <- ifelse(novos_dados$A %in% c("concorda parcial","concorda total"), 1, 0)
+novos_dados$B <- ifelse(novos_dados$B %in% c("concorda parcial","concorda total"), 1, 0)
+
+contagem <- vennCounts(novos_dados)
+vennDiagram(contagem, circle.col = c("tomato","steelblue"), counts.col = 1)
+
+```
+
+Column {data-width=150}
+-----------------------------------------------------------------------
+
+### Wordcloud Dilma
+
+```{r}
+# pacotes necessários
+library(tm)
+library(RColorBrewer) # paleta de cores
+library(wordcloud)
+
+# ler discurso
+dilma <- readLines("V:/SUEP/Núcleo de Métodos Estatísticos e Computacionais/01 training/14 Daiane/Curso BD/00 arrumar e enviar/bases de dados/discurso_dilma.txt")
+
+# palavras que não gostaria que entrassem 
+palavras_remover <- c("que","para","com","isso","como","por", "essa","esse","mas","são","uma",
+                      "vão","eles","elas","ela", "eu","nós","meu", "minha","não","mais","foi","aqui",
+                      "então","tem","dos","das","de","da","seu","sua","seus","suas","era", "meus","ele",
+                      "nos","está","estou","estamos", "muito","até","houve","aos")
+
+# criar objeto corpus
+corpus_dilma <- Corpus(VectorSource(dilma))
+corpus_dilma <- tm_map(corpus_dilma, removePunctuation)
+corpus_dilma <- tm_map(corpus_dilma, removeNumbers)
+corpus_dilma <- tm_map(corpus_dilma, removeWords, palavras_remover)
+
+# desenhar nuvem
+wordcloud(corpus_dilma, max.words = 20, random.order = F, rot.per = F, 
+          colors = RColorBrewer::brewer.pal(5,"Reds"), font = 2)
+
+```
+
+Página 2
+=================
+
+
+### Treemap
+
+```{r}
+# pacote necessário
+library(treemap)
+
+# dados que serão utilizados
+data(GNI2014)
+
+# esboçar gráfico
+treemap(GNI2014, index = c("continent", "iso3"), vSize = "population", vColor = "GNI", type = "value", palette = "Blues")
+
+```
+
+
+
+Correlação
+=================
+
+```{r}
+# carregar dados
+data(mtcars)
+
+# calcular coeficiente de correlação
+M <- cor(mtcars, use = "complete.obs")
+
+# pacote necessário
+library(corrplot)
+
+# matriz de correlação 2
+corrplot(M, method = "color", cl.pos = "b", type = "lower", addgrid.col = "white",
+         addCoef.col = "white", tl.col = "black", tl.cex = 0.7, number.cex = 0.7, cl.cex = 0.7)
+
+```
