@@ -18,10 +18,6 @@ p_load(readxl, ggplot2, plotly, corrplot, plotrix,
        wordcloud, wordcloud2, BETS, devtools, dygraphs,
        rmarkdown, flexdashboard, shiny, shinydashboard, shinythemes)
 
-source("http://www.bioconductor.org/biocLite.R")
-biocLite("limma")
+install.packages("BiocManager")
+BiocManager::install("limma")
 library(limma)
-
-
-
-
