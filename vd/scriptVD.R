@@ -7,7 +7,6 @@
 # bases que serão utilizadas durante a aula
 setwd("")
 
-
 # dispersão ou pontos -----------------------------------------
 
 plot(iris[,"Sepal.Length"], iris[,"Petal.Length"], 
@@ -81,7 +80,7 @@ pyramid.plot(brasil_prop[,4], brasil_prop[,5], labels = brasil_prop[,1],
 # gráfico de barras -------------------------------------------
 
 # leitura de dados + pacotes necessários
-ipea <- read.csv2("base_pesquisa_ipea.csv")
+ipea <- read.csv2("base_pesquisa_ipea.csv", fileEncoding = "latin1")
 library(RColorBrewer) # paleta de cores
 library(plotly)
 
@@ -245,13 +244,11 @@ plot_ly(prop, labels = ~categoria, values = ~prop, textposition = 'inside', text
 # digrama de venn ---------------------------------------------
 
 # leitura dos dados
-ipea <- read.csv2("base_pesquisa_ipea.csv")
+ipea <- read.csv2("base_pesquisa_ipea.csv", fileEncoding = "latin1")
 dados <- ipea[,c("sexo","mulheres.que.usam.roupas.que.mostram.o.corpo.merecem.ser.atacadas",
                  "se.as.mulheres.soubessem.como.se.comportar..haveria.menos.estupros")]
 colnames(dados) <- c("sexo","A","B")
 
-#source("http://www.bioconductor.org/biocLite.R")
-#biocLite("limma")
 library(limma)
 
 novos_dados <- subset(dados, sexo == "masculino")[,2:3]
@@ -339,7 +336,7 @@ library(RColorBrewer) # paleta de cores
 library(wordcloud)
 
 # ler discurso
-dilma <- readLines("discurso_dilma.txt")
+dilma <- readLines("discurso_dilma.txt", encoding = "latin1")
 
 # palavras que não gostaria que entrassem 
 palavras_remover <- c("que","para","com","isso","como","por", "essa","esse","mas","são","uma",
@@ -362,7 +359,7 @@ wordcloud(corpus_dilma, max.words = 20, random.order = F, rot.per = F,
           colors = RColorBrewer::brewer.pal(5,"Reds"), font = 2)
 
 # ler outro discurso
-temer <- readLines("discurso_temer.txt")
+temer <- readLines("discurso_temer.txt", encoding = "latin1")
 
 # criar objeto corpus
 corpus_temer <- Corpus(VectorSource(temer))
@@ -432,12 +429,12 @@ plot(xts)
 library(BETS)
 
 # procurar séries disponíveis que contenham a palavra IPCA
-BETS.search(description = "IPCA")
+BETSsearch(description = "IPCA")
 
 # guardar IPCA e IPCA Acumulado em 12 meses
-BETS.get("433")
-ipca <- ts(BETS.get("433")[,2], start = c(1980,1), freq = 12)
-ipca_acum <- ts(BETS.get("13522")[,2], start = c(1980,12), freq = 12)
+BETSget("433")
+ipca <- BETSget("433")
+ipca_acum <- BETSget("13522")
 
 # juntar os dois objetos num só objeto e iniciar em jan/2006
 precos <- window(cbind(ipca,ipca_acum), start = c(2006,1), freq = 12)
@@ -464,8 +461,8 @@ dygraph(precos, main = "IPCA vs. IPCA Acumulado") %>%
   dyShading(from = "2010-1-1", to = "2011-1-1", color = "#E5E5E5")
 
 # novos objetos: IPCA Acumulado + meta da inflação
-meta_inf <- ts(c(rep(2.5,12*11),rep(3,12*2)), start = c(2006,1), end = end(ipca), freq = 12)
-meta_sup <- ts(c(rep(6.5,12*11),rep(6,12*2)), start = c(2006,1), end = end(ipca), freq = 12)
+meta_inf <- ts(c(rep(2.5,12*11),rep(3,12*2),rep(2.75,12)), start = c(2006,1), end = end(ipca), freq = 12)
+meta_sup <- ts(c(rep(6.5,12*11),rep(6,12*2),rep(5.75,12)), start = c(2006,1), end = end(ipca), freq = 12)
 precos2 <- window(cbind(ipca_acum, meta_inf, meta_sup), start = c(2006,1), freq = 12)
 
 # dygraph 4: série com 'intervalo'
@@ -485,4 +482,5 @@ dygraph(precos2, main = "IPCA Acumulado 12 meses + Intervalo de Meta + Plaquinha
            color = "#EE6363", strokeWidth = 2) %>%
   dyAnnotation("2014-10-1", text = "Eleições 2014", tooltip = "Dilma reeleita",
                width = 100, tickHeight = -50)
+
 
